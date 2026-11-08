@@ -2,6 +2,10 @@
 
 A tabbed file explorer for Windows, built with WPF on .NET 10. It has no dependency on the Windows App SDK.
 
+## Download
+
+Get the latest `Waypoint-<version>-win-x64.zip` from [Releases](https://github.com/cistrans10-bit/Waypoint/releases/latest), extract it and run `Waypoint.exe`. It runs on 64-bit Windows 10 and 11 without needing .NET installed. The app is unsigned, so Windows SmartScreen may warn on first launch; choose **More info → Run anyway**.
+
 ## Features
 
 - Tabs in the title bar (Ctrl+T, Ctrl+W, Ctrl+Tab, middle-click to close)
