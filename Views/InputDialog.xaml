@@ -1,0 +1,19 @@
+<Window x:Class="Waypoint.Views.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="440" SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="{DynamicResource LayerBrush}" Foreground="{DynamicResource TextPrimaryBrush}"
+        FontFamily="{StaticResource UiFont}" FontSize="13" UseLayoutRounding="True"
+        SourceInitialized="Window_SourceInitialized" Loaded="Window_Loaded">
+    <StackPanel Margin="24,20,24,22">
+        <TextBlock x:Name="HeadingText" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,14" />
+        <TextBlock x:Name="LabelText" Margin="0,0,0,6" Foreground="{DynamicResource TextSecondaryBrush}" />
+        <TextBox x:Name="InputBox" />
+        <TextBlock x:Name="ErrorText" Margin="0,8,0,0" TextWrapping="Wrap" Visibility="Collapsed"
+                   Foreground="{DynamicResource CapacityWarnBrush}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
+            <Button Content="OK" MinWidth="100" Style="{StaticResource AccentButton}" IsDefault="True" Click="Ok_Click" />
+            <Button Content="Cancel" MinWidth="100" Margin="8,0,0,0" Style="{StaticResource StandardButton}" IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>

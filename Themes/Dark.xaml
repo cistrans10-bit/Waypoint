@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#202020" />
+    <SolidColorBrush x:Key="LayerBrush" Color="#2B2B2B" />
+    <SolidColorBrush x:Key="ContentBrush" Color="#1C1C1C" />
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#C5C5C5" />
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#8E8E8E" />
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="#6A6A6A" />
+
+    <SolidColorBrush x:Key="AccentBrush" Color="#4CC2FF" />
+    <SolidColorBrush x:Key="OnAccentBrush" Color="#000000" />
+
+    <SolidColorBrush x:Key="HoverBrush" Color="#14FFFFFF" />
+    <SolidColorBrush x:Key="PressedBrush" Color="#0AFFFFFF" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="#304CC2FF" />
+    <SolidColorBrush x:Key="SelectedHoverBrush" Color="#404CC2FF" />
+    <SolidColorBrush x:Key="ActiveItemBrush" Color="#1CFFFFFF" />
+
+    <SolidColorBrush x:Key="ControlFillBrush" Color="#0FFFFFFF" />
+    <SolidColorBrush x:Key="ControlFillHoverBrush" Color="#16FFFFFF" />
+    <SolidColorBrush x:Key="ControlFillFocusBrush" Color="#1E1E1E" />
+    <SolidColorBrush x:Key="ControlBorderBrush" Color="#17FFFFFF" />
+    <SolidColorBrush x:Key="DividerBrush" Color="#1FFFFFFF" />
+
+    <SolidColorBrush x:Key="MenuBackgroundBrush" Color="#2C2C2C" />
+    <SolidColorBrush x:Key="MenuBorderBrush" Color="#404040" />
+
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="#5A5A5A" />
+    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#8A8A8A" />
+
+    <SolidColorBrush x:Key="CapacityTrackBrush" Color="#2EFFFFFF" />
+    <SolidColorBrush x:Key="CapacityWarnBrush" Color="#FF6B6B" />
+    <SolidColorBrush x:Key="CloseHoverBrush" Color="#C42B1C" />
+
+    <SolidColorBrush x:Key="DriveBarTrackBrush" Color="#E6E6E6" />
+    <SolidColorBrush x:Key="DriveBarBorderBrush" Color="#BCBCBC" />
+    <SolidColorBrush x:Key="DriveBarFillBrush" Color="#0F6FCF" />
+    <SolidColorBrush x:Key="DriveBarWarnBrush" Color="#C42B1C" />
+    <SolidColorBrush x:Key="FocusRingBrush" Color="#FFFFFF" />
+</ResourceDictionary>
