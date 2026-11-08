@@ -650,7 +650,8 @@ public partial class MainWindow : Window
             menu.Items.Add(MenuFactory.Item("Paste", "", () => PasteInto(folder), "Ctrl+V", FileClipboard.HasFiles()));
             MenuFactory.Separator(menu);
         }
-        menu.Items.Add(MenuFactory.Item("Sort by…", "", () => ShowSortMenu(FileList, PlacementMode.MousePoint)));
+        if (IsRealFolder)
+            menu.Items.Add(MenuFactory.Item("Sort by…", "", () => ShowSortMenu(FileList, PlacementMode.MousePoint)));
         menu.Items.Add(MenuFactory.Item("Refresh", "", () => vm.SelectedTab?.Refresh(), "F5"));
         var hidden = MenuFactory.Item("Show hidden items", "", () => vm.ShowHidden = !vm.ShowHidden);
         hidden.IsChecked = vm.ShowHidden;
@@ -733,6 +734,7 @@ public partial class MainWindow : Window
         SetHeader(TypeColumn, "Type", SortColumn.Type);
         SetHeader(SizeColumn, "Size", SortColumn.Size);
         SortLabel.Text = tab is null ? "Sort" : SortChoices.First(c => c.Column == tab.SortColumn).Label;
+        SortButton.Visibility = tab?.CurrentPath == Locations.ThisPc ? Visibility.Collapsed : Visibility.Visible;
 
         void SetHeader(GridViewColumn column, string text, SortColumn key)
         {

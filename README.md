@@ -13,8 +13,8 @@ Get the latest `Waypoint-<version>-win-x64.zip` from [Releases](https://github.c
 - Filter box at the top of the sidebar
 - Breadcrumb address bar; click empty space or press Ctrl+L to type a path, click › to jump to a subfolder
 - Search box that filters the current folder (Ctrl+F)
-- This PC page with drive tiles and usage bars, like File Explorer
-- Details view with sortable columns (name, date modified, date created, type, size), natural name sorting, folders first; the chosen sort is remembered
+- This PC page with drive tiles and usage bars in drive letter order, like File Explorer
+- Folders use a details view with sortable columns (name, date modified, date created, type, size), natural name sorting, folders first; the chosen sort is remembered
 - Cut, copy, paste, rename, delete to Recycle Bin, and new folder, using the Windows shell (undo and progress dialogs included)
 - Drag and drop to and from File Explorer, into folders, sidebar items and tabs
 - Refreshes automatically when files change

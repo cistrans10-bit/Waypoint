@@ -396,6 +396,9 @@ public sealed class TabViewModel : ObservableObject, IDisposable
         {
             var a = (FileItem)x!;
             var b = (FileItem)y!;
+            // This PC always lists drives by letter, like File Explorer; the chosen sort applies to folders.
+            if (tab.CurrentPath == Locations.ThisPc)
+                return string.Compare(a.FullPath, b.FullPath, StringComparison.OrdinalIgnoreCase);
             if (a.IsFolder != b.IsFolder)
                 return a.IsFolder ? -1 : 1;
             int result = tab.SortColumn switch
@@ -406,9 +409,6 @@ public sealed class TabViewModel : ObservableObject, IDisposable
                 SortColumn.Size => a.Size.CompareTo(b.Size),
                 _ => 0,
             };
-            // Drives go in drive letter order, like File Explorer.
-            if (result == 0 && a.IsDrive && b.IsDrive)
-                result = string.Compare(a.FullPath, b.FullPath, StringComparison.OrdinalIgnoreCase);
             if (result == 0)
                 result = NativeMethods.StrCmpLogical(a.Name, b.Name);
             return tab.SortDescending ? -result : result;
