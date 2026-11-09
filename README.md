@@ -16,6 +16,7 @@ Get the latest `Waypoint-<version>-win-x64.zip` from [Releases](https://github.c
 - This PC page with drive tiles and usage bars in drive letter order, like File Explorer
 - Folders use a details view with sortable columns (name, date modified, date created, type, size), natural name sorting, folders first; the chosen sort is remembered
 - Cut, copy, paste, rename, delete to Recycle Bin, and new folder, using the Windows shell (undo and progress dialogs included)
+- Extract zip, 7z, rar, tar, gz, bz2 and xz archives: **Extract to "name\"**, **Extract here** or **Extract to…**, from the Extract button or the right-click menu (password-protected archives aren't supported yet)
 - Drag and drop to and from File Explorer, into folders, sidebar items and tabs
 - Refreshes automatically when files change
 - Follows the Windows light or dark mode setting
@@ -30,3 +31,7 @@ dotnet publish -c Release -r win-x64 --self-contained true -o publish
 ```
 
 Run `publish\Waypoint.exe`.
+
+## Third-party software
+
+Archive extraction uses [SharpCompress](https://github.com/adamhathcock/sharpcompress) (MIT). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

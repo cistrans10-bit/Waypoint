@@ -10,7 +10,9 @@ public sealed class MainViewModel : ObservableObject
 
     TabViewModel? selectedTab;
     string selectionText = "";
+    string activityText = "";
     bool hasSelection;
+    bool hasArchiveSelection;
 
     public MainViewModel(AppSettings settings, string? startPath)
     {
@@ -67,6 +69,10 @@ public sealed class MainViewModel : ObservableObject
 
     public string SelectionText { get => selectionText; private set => SetProperty(ref selectionText, value); }
     public bool HasSelection { get => hasSelection; private set => SetProperty(ref hasSelection, value); }
+    public bool HasArchiveSelection { get => hasArchiveSelection; private set => SetProperty(ref hasArchiveSelection, value); }
+
+    /// <summary>Progress of a background task such as extraction, shown in the status bar.</summary>
+    public string ActivityText { get => activityText; set => SetProperty(ref activityText, value); }
 
     public TabViewModel OpenTab(string path, bool select = true)
     {
@@ -140,6 +146,7 @@ public sealed class MainViewModel : ObservableObject
     public void SetSelection(IReadOnlyList<FileItem> items)
     {
         HasSelection = items.Count > 0;
+        HasArchiveSelection = items.Any(i => !i.IsFolder && ArchiveExtractor.IsArchive(i.FullPath));
         if (items.Count == 0)
         {
             SelectionText = "";

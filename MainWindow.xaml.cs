@@ -617,6 +617,12 @@ public partial class MainWindow : Window
             menu.Items.Add(MenuFactory.Item("Open with…", "", () => Run(() => FileOperations.OpenWith(first.FullPath))));
         }
 
+        if (selection.Any(IsArchive))
+        {
+            MenuFactory.Separator(menu);
+            AddExtractItems(menu, selection);
+        }
+
         MenuFactory.Separator(menu);
         if (!anyDrive)
         {
@@ -781,6 +787,107 @@ public partial class MainWindow : Window
             ShowProperties(selection[0].FullPath);
         else if (IsRealFolder)
             ShowProperties(CurrentFolder);
+    }
+
+    static bool IsArchive(FileItem item) => !item.IsFolder && ArchiveExtractor.IsArchive(item.FullPath);
+
+    void Extract_Click(object sender, RoutedEventArgs e)
+    {
+        var menu = new ContextMenu { PlacementTarget = ExtractButton, Placement = PlacementMode.Bottom };
+        AddExtractItems(menu, Selected());
+        if (menu.Items.Count > 0)
+            menu.IsOpen = true;
+    }
+
+    void AddExtractItems(ContextMenu menu, IReadOnlyList<FileItem> selection)
+    {
+        var archives = selection.Where(IsArchive).ToList();
+        if (archives.Count == 0)
+            return;
+        string toFolder = archives.Count == 1
+            ? $"Extract to \"{ArchiveExtractor.BaseName(archives[0].FullPath)}\\\""
+            : "Extract each to its own folder";
+        menu.Items.Add(MenuFactory.Item(toFolder, "", () => ExtractArchives(archives, ExtractMode.ToNewFolder)));
+        menu.Items.Add(MenuFactory.Item("Extract here", "", () => ExtractArchives(archives, ExtractMode.Here)));
+        menu.Items.Add(MenuFactory.Item("Extract to…", "", () => ExtractArchives(archives, ExtractMode.ToChosenFolder)));
+    }
+
+    async void ExtractArchives(IReadOnlyList<FileItem> archives, ExtractMode mode)
+    {
+        if (vm.ActivityText.Length > 0)
+        {
+            ShowError("Another extraction is still running. Try again when it finishes.");
+            return;
+        }
+        string? chosen = null;
+        if (mode == ExtractMode.ToChosenFolder)
+        {
+            var dialog = new Microsoft.Win32.OpenFolderDialog
+            {
+                Title = "Extract to",
+                InitialDirectory = Path.GetDirectoryName(archives[0].FullPath),
+            };
+            if (dialog.ShowDialog(this) != true)
+                return;
+            chosen = dialog.FolderName;
+        }
+
+        string? newFolder = null;
+        int skipped = 0;
+        try
+        {
+            foreach (var archive in archives)
+            {
+                string parent = Path.GetDirectoryName(archive.FullPath)!;
+                string destination = mode switch
+                {
+                    ExtractMode.ToNewFolder => Path.Combine(parent, FileOperations.UniqueName(parent, ArchiveExtractor.BaseName(archive.FullPath))),
+                    ExtractMode.Here => parent,
+                    _ => chosen!,
+                };
+                try
+                {
+                    bool overwrite = true;
+                    if (mode != ExtractMode.ToNewFolder)
+                    {
+                        int conflicts = await Task.Run(() => ArchiveExtractor.CountConflicts(archive.FullPath, destination));
+                        if (conflicts > 0)
+                        {
+                            var answer = MessageBox.Show(this,
+                                $"{conflicts:N0} {(conflicts == 1 ? "file" : "files")} from \"{archive.Name}\" already exist in \"{destination}\".\n\n" +
+                                "Replace them? Choose No to keep the existing files.",
+                                "Waypoint", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                            if (answer == MessageBoxResult.Cancel)
+                                return;
+                            overwrite = answer == MessageBoxResult.Yes;
+                        }
+                    }
+
+                    vm.ActivityText = $"Extracting {archive.Name}…";
+                    string name = archive.Name;
+                    var progress = new Progress<double>(p => vm.ActivityText = $"Extracting {name}… {p:P0}");
+                    var result = await Task.Run(() => ArchiveExtractor.Extract(archive.FullPath, destination, overwrite, progress));
+                    skipped += result.Skipped;
+                    if (mode == ExtractMode.ToNewFolder)
+                        newFolder ??= destination;
+                }
+                catch (Exception ex)
+                {
+                    SettingsService.LogError(ex);
+                    ShowError(ArchiveExtractor.Describe(ex, archive.Name));
+                }
+            }
+        }
+        finally
+        {
+            vm.ActivityText = "";
+        }
+
+        if (skipped > 0)
+            MessageBox.Show(this, $"Kept {skipped:N0} existing {(skipped == 1 ? "file" : "files")} instead of replacing them.",
+                "Waypoint", MessageBoxButton.OK, MessageBoxImage.Information);
+        if (newFolder is not null && vm.SelectedTab is { } tab && Locations.PathEquals(Path.GetDirectoryName(newFolder), tab.CurrentPath))
+            await tab.ReloadAsync(newFolder);
     }
 
     void OpenItems(IReadOnlyList<FileItem> items)
