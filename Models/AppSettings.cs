@@ -11,6 +11,7 @@ public sealed class AppSettings
     public bool ShowHidden { get; set; }
     public int SortColumn { get; set; }
     public bool SortDescending { get; set; }
+    public bool GroupByDate { get; set; } = true;
     public double SidebarWidth { get; set; } = 250;
     public double WindowLeft { get; set; }
     public double WindowTop { get; set; }

@@ -306,6 +306,20 @@
                       PreviewMouseLeftButtonDown="FileList_PreviewMouseLeftButtonDown"
                       PreviewMouseLeftButtonUp="FileList_PreviewMouseLeftButtonUp" PreviewMouseMove="FileList_PreviewMouseMove"
                       DragEnter="FileList_DragOver" DragOver="FileList_DragOver" Drop="FileList_Drop">
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="10,14,10,4">
+                                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding ItemCount, StringFormat=({0})}" Margin="6,1,0,0" FontSize="13" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    <Rectangle Height="1" Margin="12,1,0,0" VerticalAlignment="Center" Fill="{DynamicResource DividerBrush}" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource ColumnHeader}" AllowsColumnReorder="True">
                         <GridViewColumn x:Name="NameColumn" Width="320">

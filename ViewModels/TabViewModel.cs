@@ -39,6 +39,7 @@ public sealed class TabViewModel : ObservableObject, IDisposable
     readonly DispatcherTimer syncTimer;
     FileSystemWatcher? watcher;
     int loadVersion;
+    bool groupByDate;
     string currentPath = "";
     string title = "";
     ImageSource? icon;
@@ -50,9 +51,10 @@ public sealed class TabViewModel : ObservableObject, IDisposable
     bool isLoading;
     bool isSelected;
 
-    public TabViewModel(Func<bool> showHidden, SortColumn sortColumn = SortColumn.Name, bool sortDescending = false)
+    public TabViewModel(Func<bool> showHidden, SortColumn sortColumn = SortColumn.Name, bool sortDescending = false, bool groupByDate = false)
     {
         this.showHidden = showHidden;
+        this.groupByDate = groupByDate;
         SortColumn = sortColumn;
         SortDescending = sortDescending;
         View = new ListCollectionView(Items) { CustomSort = new FileItemComparer(this), Filter = MatchesFilter };
@@ -192,7 +194,25 @@ public sealed class TabViewModel : ObservableObject, IDisposable
     {
         SortColumn = column;
         SortDescending = descending;
+        // Also regroups, since groups follow the sorted date and direction.
         View.Refresh();
+    }
+
+    public void SetGrouping(bool enabled)
+    {
+        groupByDate = enabled;
+        ApplyGrouping();
+    }
+
+    void ApplyGrouping()
+    {
+        bool wanted = groupByDate && CurrentPath.Length > 0 && CurrentPath != Locations.ThisPc;
+        if (wanted == View.GroupDescriptions.Count > 0)
+            return;
+        if (wanted)
+            View.GroupDescriptions.Add(new DateGroupDescription(this));
+        else
+            View.GroupDescriptions.Clear();
     }
 
     public void Dispose()
@@ -205,6 +225,7 @@ public sealed class TabViewModel : ObservableObject, IDisposable
     void SetLocation(string path)
     {
         CurrentPath = path;
+        ApplyGrouping();
         Title = Locations.DisplayName(path);
         Icon = path == Locations.ThisPc
             ? ShellIcons.ThisPcIcon

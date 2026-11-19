@@ -67,6 +67,20 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
+    public bool GroupByDate
+    {
+        get => Settings.GroupByDate;
+        set
+        {
+            if (Settings.GroupByDate == value)
+                return;
+            Settings.GroupByDate = value;
+            OnPropertyChanged();
+            foreach (var tab in Tabs)
+                tab.SetGrouping(value);
+        }
+    }
+
     public string SelectionText { get => selectionText; private set => SetProperty(ref selectionText, value); }
     public bool HasSelection { get => hasSelection; private set => SetProperty(ref hasSelection, value); }
     public bool HasArchiveSelection { get => hasArchiveSelection; private set => SetProperty(ref hasArchiveSelection, value); }
@@ -77,7 +91,7 @@ public sealed class MainViewModel : ObservableObject
     public TabViewModel OpenTab(string path, bool select = true)
     {
         var sort = Enum.IsDefined((SortColumn)Settings.SortColumn) ? (SortColumn)Settings.SortColumn : SortColumn.Name;
-        var tab = new TabViewModel(() => Settings.ShowHidden, sort, Settings.SortDescending);
+        var tab = new TabViewModel(() => Settings.ShowHidden, sort, Settings.SortDescending, Settings.GroupByDate);
         tab.Loaded += (_, e) => TabLoaded?.Invoke(this, e);
         tab.Navigated += OnTabNavigated;
         Tabs.Add(tab);

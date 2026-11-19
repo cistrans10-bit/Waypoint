@@ -330,6 +330,7 @@
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListView">

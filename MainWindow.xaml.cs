@@ -721,6 +721,10 @@ public partial class MainWindow : Window
         var descending = MenuFactory.Item("Descending", "", () => ApplySort(tab, tab.SortColumn, true));
         descending.IsChecked = tab.SortDescending;
         menu.Items.Add(descending);
+        MenuFactory.Separator(menu);
+        var grouping = MenuFactory.Item("Group by date", "", () => vm.GroupByDate = !vm.GroupByDate);
+        grouping.IsChecked = vm.GroupByDate;
+        menu.Items.Add(grouping);
         menu.IsOpen = true;
     }
 
